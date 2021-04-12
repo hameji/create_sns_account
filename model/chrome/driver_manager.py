@@ -86,14 +86,13 @@ class DriverManager(object):
             raise chrome_error.ChromeElementCountError
         input_elements[index].send_keys(input)
 
-    def select_option(self, xpath: str, option_index: int, start_index: int, end_index: int):
+    def select_option(self, xpath: str, option_index: int, select_index: int):
         """Set index of html option tag"""
         option_elements = self.driver.find_elements_by_xpath(xpath)
         if option_index > len(option_elements) - 1:
             raise chrome_error.ChromeElementCountError
         select = Select(option_elements[option_index])
-        index = random.randint(start_index, end_index)
-        select.select_by_index(index)
+        select.select_by_index(select_index)
         time.sleep(0.5)
 
     def click_element(self, xpath: str, index: int):

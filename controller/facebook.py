@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-
+import datetime
 from model.chrome import driver_manager
 from model.user.user_info import UserInfo
 
@@ -64,9 +64,12 @@ class Facebook(object):
         year_xpath = "//select[@id='year']"
         month_xpath = "//select[@id='month']"
         day_xpath = "//select[@id='day']"
-        self.driver_manager.select_option(year_xpath, 0, 18, 65)
-        self.driver_manager.select_option(month_xpath, 0, 0, 11)
-        self.driver_manager.select_option(day_xpath, 0, 0, 28)
+        year_index = datetime.date().year - self.user_info.birthday.year
+        month_index = self.user_info.birthday.month
+        day_index = self.user_info.birthday.day
+        self.driver_manager.select_option(year_xpath, 0, year_index)
+        self.driver_manager.select_option(month_xpath, 0, month_index)
+        self.driver_manager.select_option(day_xpath, 0, day_index)
 
     def set_sex(self):
         sex_xpath = "//input[contains(@type, 'radio') and contains(@name, 'sex')]"
