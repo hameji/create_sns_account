@@ -26,3 +26,16 @@ class UserInfo(object):
         delta = relativedelta(self.birthday, date.today())
         self.age = delta.years
         self.sex = random.randomint(0, 1)
+
+    def refresh_email(self, user_info):
+        self.lastname = user_info.lastname
+        self.firstname = user_info.first_name
+        self.email = user_info.e_mail # todo: change to 10min email
+        self.passwd = user_info.passwd
+        self.birthday = user_info.birthday
+        self.age = user_info.age
+        self.sex = user_info.sex
+        return self
+
+
+
