@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import random
 
 from model.extension import string_extension
+from model.utils.datetime_utils import DatetimeUtils
 
 @dataclass
 class UserInfo(object):
@@ -23,8 +24,9 @@ class UserInfo(object):
         self.firstname = first_name
         self.email = e_mail
         self.passwd = string_extension.random(10)
-        # date(YYYY, MM, dd)
-        self.birthday = date.today()
+        du = DatetimeUtils()
+        random_birthday = du.get_radom_date_for_age(18, 65)
+        self.birthday = random_birthday
         delta = relativedelta(self.birthday, date.today())
         self.age = delta.years
         self.sex = random.randomint(0, 1)
