@@ -108,6 +108,9 @@ class DriverManager(object):
         elements[index].click()
         time.sleep(5)
 
+    def get_current_url(self):
+        return self.driver.current_url()
+
     def close_driver(self):
         """Close chrome driver"""
         if self.driver is not None:
