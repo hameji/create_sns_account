@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 });
 
-const exec_btn = document.querySelector("#exec-btn");
-exec_btn.addEventListener("click", () => {
-	console.log("click!");
+create.addEventListener("click", () => {
+	eel.create_account(name_area.value);
 });
