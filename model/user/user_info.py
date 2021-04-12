@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dataclasses import dataclass
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from dataclasses import dataclass
 import random
+
+from model.extension import string_extension
 
 @dataclass
 class UserInfo(object):
@@ -20,7 +22,7 @@ class UserInfo(object):
         self.lastname = last_name
         self.firstname = first_name
         self.email = e_mail
-        self.passwd = ""
+        self.passwd = string_extension.random(10)
         # date(YYYY, MM, dd)
         self.birthday = date.today()
         delta = relativedelta(self.birthday, date.today())
