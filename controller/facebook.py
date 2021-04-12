@@ -5,12 +5,13 @@ import time
 import random
 
 from model.chrome import driver_manager
+from model.user.user_info import UserInfo
 
 TOP = "https://www.facebook.com/"
 
 class Facebook(object):
 
-    def __init__(self):
+    def __init__(self, user_info: None):
         print("[Facebook] init")
         self.driver_manager = None
         self.user_info = None
@@ -20,6 +21,9 @@ class Facebook(object):
             print("start")
             self.driver_manager.DriverManager()
             self.driver_manager.start_driver()
+
+    def hold_user_info(self, user_info: UserInfo):
+        self.user_info = user_info
 
     def open_top(self):
         self.driver_manager.open_page(TOP)
@@ -36,25 +40,25 @@ class Facebook(object):
         xpath = "//a[contains(@role, 'button') and contains(text(), '新しいアカウントを作成')]" 
         self.driver_manager.click_element(xpath, 0)
 
-    def set_lastname(self, lastname: str):
+    def set_lastname(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'lastname')]"
-        self.driver_manager.set_input(xpath, 0, lastname)
+        self.driver_manager.set_input(xpath, 0, self.user_info.lastname)
 
-    def set_firstname(self, firstname: str):
+    def set_firstname(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'firstname')]"
-        self.driver_manager.set_input(xpath, 0, firstname)
+        self.driver_manager.set_input(xpath, 0, self.user_info.firstname)
 
-    def set_email(self, email: str):
+    def set_email(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email__')]"
-        self.driver_manager.set_input(xpath, 0, email)
+        self.driver_manager.set_input(xpath, 0,  self.user_info.email)
 
-    def set_confirm_email(self, email: str):
+    def set_confirm_email(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email_confirmation__')]"
-        self.driver_manager.set_input(xpath, 0, email)
+        self.driver_manager.set_input(xpath, 0,  self.user_info.email)
 
-    def set_password(self, password: str):
+    def set_password(self):
         xpath = "//input[contains(@type, 'password') and contains(@name, 'reg_passwd__')]"
-        self.driver_manager.set_input(xpath, 0, password)
+        self.driver_manager.set_input(xpath, 0,  self.user_info.passwd)
 
     def set_birthday(self):
         year_xpath = "//select[@id='year']"
@@ -66,7 +70,7 @@ class Facebook(object):
 
     def set_sex(self):
         sex_xpath = "//input[contains(@type, 'radio') and contains(@name, 'sex')]"
-        sex_index = random.randint(1,2)
+        sex_index = self.user_info.sex
         self.driver_manager.click_element(sex_xpath, sex_index)
 
     def set_user_info(self):
@@ -83,7 +87,7 @@ class Facebook(object):
         xpath = "//button[contains(@type, 'submit') and contains(@name, 'websubmit')]"
         self.driver_manager.click_element(xpath, 0)
 
-    def repeat_registration(self, user_info):
+    def repeat_registration(self):
         self.set_email()
         self.press_register_button()
 
@@ -139,7 +143,7 @@ class Facebook(object):
 
 # _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-def create_account(fullName: str):
+def create_account(user_info: UserInfo):
     """Automatically handles registration of a random account with input name.
 
     Args:
@@ -155,6 +159,8 @@ def create_account(fullName: str):
     facebook.open_top()
 
     facebook.move_to_register_page()
+
+    facebook.hold_user_info(user_info)
 
     # 1/2 page
     facebook.set_user_info()
