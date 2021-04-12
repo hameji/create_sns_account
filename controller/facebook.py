@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import time
-import random
 
 from model.chrome import driver_manager
 from model.user.user_info import UserInfo
 
 TOP = "https://www.facebook.com/"
+EMAIL_CONFIRM_PARTIAL_URL = "https://www.facebook.com/confirmemail.php?next="
 
 class Facebook(object):
 
@@ -70,8 +70,7 @@ class Facebook(object):
 
     def set_sex(self):
         sex_xpath = "//input[contains(@type, 'radio') and contains(@name, 'sex')]"
-        sex_index = self.user_info.sex
-        self.driver_manager.click_element(sex_xpath, sex_index)
+        self.driver_manager.click_element(sex_xpath, self.user_info.sex)
 
     def set_user_info(self):
         """First, set user info"""
@@ -92,12 +91,11 @@ class Facebook(object):
         self.press_register_button()
 
     def check_registration(self):
-        next_url = "https://www.facebook.com/confirmemail.php?next="
         # error_message_xpath = "//div[@id='reg_error_inner']"
         counter = 0
         while True:
             current_url = self.driver_manager.get_current_url()
-            if next_url in current_url:
+            if EMAIL_CONFIRM_PARTIAL_URL in current_url:
                 break
             else:
                 time.sleep(2)
