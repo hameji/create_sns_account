@@ -23,7 +23,7 @@ class DriverManager(object):
         self.driver = None
         # self.WAIT = WebDriverWait(self.driver, 30)
 
-    def set_options(self):
+    def set_driver_options(self):
         """Set chrome driver option"""
         options = webdriver.ChromeOptions()
         options.add_argument(
@@ -45,7 +45,7 @@ class DriverManager(object):
     def start_driver(self):
         """If driver is none set driver"""
         if self.driver is None:
-            driver_options = self.set_options()
+            driver_options = self.set_driver_options()
             if os.name == 'nt': #Windows
                 DRIVER_NAME = "chromedriver.exe"
             elif os.name == 'posix': #Mac
