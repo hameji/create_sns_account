@@ -11,6 +11,7 @@ from model.utils.datetime_utils import DatetimeUtils
 
 @dataclass
 class UserInfo(object):
+    fullname: str
     lastname: str
     firstname: str
     email: str
@@ -19,7 +20,7 @@ class UserInfo(object):
     age: int
     sex: int
 
-    def __init__(self, last_name: str, first_name: str, e_mail: str, start_age: int, end_age: int):
+    def __init__(self, last_name: str, first_name: str, e_mail: str):
         self.lastname = last_name
         self.firstname = first_name
         self.email = e_mail
