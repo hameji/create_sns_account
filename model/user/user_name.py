@@ -21,9 +21,14 @@ class UserName(object):
             elif unicodedata.east_asian_width(char) == "W":
                 has_full_width_char = True
         name_component = fullname.split(" ")
-        for name in name_component:
-            total_name_split = name.split("　")
-        if len(total_name_split) == 1:
+        total_name_split = []
+        if len(name_component) == 1:
+            total_name_split = name_component[0].split("　")
+        else:
+            for name in name_component:
+                temp_name_split = name.split("　")
+                total_name_split.append(temp_name_split)
+        if len(total_name_split) != 2:
             raise NameDivisionError
         if has_full_width_char:
             self.firstname = total_name_split[1]

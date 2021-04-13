@@ -19,5 +19,5 @@ class DataManager(object):
         elif NEW_LINE_CODE in input:
             result = input.split(NEW_LINE_CODE)
         else:
-            result = input
+            result = [input]
         return result
