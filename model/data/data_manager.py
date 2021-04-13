@@ -18,4 +18,6 @@ class DataManager(object):
             result = input.split("、")
         elif NEW_LINE_CODE in input:
             result = input.split(NEW_LINE_CODE)
+        else:
+            result = input
         return result
