@@ -8,9 +8,10 @@ import random
 
 from model.extension import string_extension
 from model.utils.datetime_utils import DatetimeUtils
+from model.user.user_name import UserName
 
 @dataclass
-class UserInfo(object):
+class UserInfo(UserName):
     fullname: str
     lastname: str
     firstname: str
@@ -20,9 +21,8 @@ class UserInfo(object):
     age: int
     sex: int
 
-    def __init__(self, last_name: str, first_name: str, e_mail: str):
-        self.lastname = last_name
-        self.firstname = first_name
+    def __init__(self, full_name: str, e_mail: str):
+        super().__init__(full_name)
         self.email = e_mail
         self.passwd = string_extension.random(10)
         du = DatetimeUtils()
