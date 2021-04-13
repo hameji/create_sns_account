@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-import time
 import datetime
 from dateutil import relativedelta
 
