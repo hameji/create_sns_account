@@ -77,6 +77,14 @@ class DriverManager(object):
             raise chrome_error.ChromeElementCountError
         return elements[index].text
 
+    def get_input_value(self, xpath: str, index: int):
+        """Get html element's text"""
+        elements = self.driver.find_elements_by_xpath(xpath)
+        print(f" ... found {len(elements)} element for text")
+        if index > len(elements) - 1:
+            raise chrome_error.ChromeElementCountError
+        return elements[index].get_attribute('value')
+
     def set_input(self, xpath: str, index: int, input: str):
         """Set html input text"""
         time.sleep(0.5)
