@@ -19,7 +19,7 @@ class Facebook(object):
     def start(self):
         if self.driver_manager is None:
             print("start")
-            self.driver_manager.DriverManager()
+            self.driver_manager = driver_manager.DriverManager()
             self.driver_manager.start_driver()
 
     def hold_user_info(self, user_info: UserInfo):
@@ -177,7 +177,6 @@ def create_account(user_info: UserInfo):
 # main処理
 def main():
     print("main")
-
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
 if __name__ == "__main__":
