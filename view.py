@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from model.user.user_info import UserInfo
 import eel
 from view.eel import desktop
 
-from model.user.user_name import UserName
+from model.user.user_info import UserInfo
 from model.data.data_manager import DataManager
 from controller import facebook
+from controller.ten_minute import TenMinute
 import settings
 
 @eel.expose
@@ -18,13 +18,17 @@ def create_account(name_str:str):
         return
     
     # Input string to list
-    dM = DataManager()
-    name_list = dM.str_to_list(name_str)
+    name_list = DataManager().str_to_list(name_str)
 
     ## process each item in list
     for name in name_list:
 
-        user_info = UserInfo(name, "email@email.com")
+        # get temporary email
+        tm = TenMinute()
+        email = tm.get_temporary_mail()
+
+        # make UserInfo
+        user_info = UserInfo(name, email)
         print(user_info)
 
         # facebook.create_account(user_info)
