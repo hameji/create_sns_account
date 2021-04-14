@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import time
+import random
 import datetime
+
 from model.chrome import driver_manager
 from model.user.user_info import UserInfo
 
@@ -11,10 +13,15 @@ EMAIL_CONFIRM_PARTIAL_URL = "https://www.facebook.com/confirmemail.php?next="
 
 class Facebook(object):
 
-    def __init__(self, user_info: None):
+# _/_/_/_/_/_/_/_/_/_/_/_/_/
+# Basic functions
+# _/_/_/_/_/_/_/_/_/_/_/_/_/
+
+    def __init__(self, user_info=None, tm=None):
         print("[Facebook] init")
         self.driver_manager = None
-        self.user_info = None
+        self.user_info = user_info
+        self.tm = tm
 
     def start(self):
         if self.driver_manager is None:
@@ -22,18 +29,15 @@ class Facebook(object):
             self.driver_manager = driver_manager.DriverManager()
             self.driver_manager.start_driver()
 
-    def hold_user_info(self, user_info: UserInfo):
-        self.user_info = user_info
-
     def open_top(self):
         self.driver_manager.open_page(TOP)
 
-    def __del__(self):
-        self.driver_manager.__del__()
+    # def __del__(self):
+    #     self.driver_manager.__del__()
 
 # _/_/_/_/_/_/_/_/_/_/_/_/_/
 # Register functions
-# _/_/_/_/_/_/_/_/_/_/_/_/_/
+# _/_/_/_/_/_/_/_/_/_/_/_/_/ -- Page1
 
     def move_to_register_page(self): 
         """Move from top page to register page"""
@@ -48,9 +52,17 @@ class Facebook(object):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'firstname')]"
         self.driver_manager.set_input(xpath, 0, self.user_info.firstname)
 
+    def clear_email(self):
+        xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email__')]"
+        self.driver_manager.clear_input(xpath, 0)
+
     def set_email(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email__')]"
         self.driver_manager.set_input(xpath, 0,  self.user_info.email)
+
+    def clear_confirm_email(self):
+        xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email_confirmation__')]"
+        self.driver_manager.clear_input(xpath, 0)
 
     def set_confirm_email(self):
         xpath = "//input[contains(@type, 'text') and contains(@name, 'reg_email_confirmation__')]"
@@ -64,9 +76,9 @@ class Facebook(object):
         year_xpath = "//select[@id='year']"
         month_xpath = "//select[@id='month']"
         day_xpath = "//select[@id='day']"
-        year_index = datetime.date().year - self.user_info.birthday.year
-        month_index = self.user_info.birthday.month
-        day_index = self.user_info.birthday.day
+        year_index = random.randint(18, 65) # datetime.date().year - self.user_info.birthday.year
+        month_index = random.randint(0, 11) # self.user_info.birthday.month
+        day_index = random.randint(0, 27) # self.user_info.birthday.day
         self.driver_manager.select_option(year_xpath, 0, year_index)
         self.driver_manager.select_option(month_xpath, 0, month_index)
         self.driver_manager.select_option(day_xpath, 0, day_index)
@@ -90,22 +102,34 @@ class Facebook(object):
         self.driver_manager.click_element(xpath, 0)
 
     def repeat_registration(self):
+        self.clear_email()
         self.set_email()
+        self.clear_confirm_email()
+        self.set_confirm_email()
         self.press_register_button()
 
     def check_registration(self):
         # error_message_xpath = "//div[@id='reg_error_inner']"
         counter = 0
         while True:
+            print(" ... going to check URL")
             current_url = self.driver_manager.get_current_url()
             if EMAIL_CONFIRM_PARTIAL_URL in current_url:
+                print(" ... url matched next page")
                 break
             else:
+                print(" ... wait 2 seconds")
                 time.sleep(2)
                 counter += 1
                 if counter == 5:
-                    self.user_info = UserInfo.refresh_email(self.user_info)
+                    print(" ... no match in 10 seconds, reset counter and get new email")
+                    counter = 0
+                    email = self.tm.get_new_email()
+                    self.user_info = self.user_info.refresh_email(email)
                     self.repeat_registration()
+
+
+# _/_/_/_/_/_/_/_/_/_/_/_/_/ -- Page2
 
     def set_confirmation_code(self, code: str):
         xpath = "//input[contains(@type, 'text') and contains(@id, 'code_in_cliff')]"
@@ -144,35 +168,35 @@ class Facebook(object):
 
 # _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-def create_account(user_info: UserInfo):
+def create_account(user_info: UserInfo, tm):
     """Automatically handles registration of a random account with input name.
 
     Args:
         fullName (str): The name of the new account
 
     Returns:
-        string.Template: Return templates with characters in templates.
+        user_info: Return templates with characters in templates.
     """
-    print("create_account")
+    print("[facebook] create_account")
 
-    facebook = Facebook()
+    facebook = Facebook(user_info, tm)
     facebook.start()
     facebook.open_top()
 
     facebook.move_to_register_page()
 
-    facebook.hold_user_info(user_info)
-
     # 1/2 page
     facebook.set_user_info()
     facebook.press_register_button()
 
-    # 2/2 page
-    facebook.set_confirmation_code()
-    facebook.confirm_code()
+    facebook.check_registration()
 
-    facebook.close_registed_popup()
-    facebook.logout()
+    # # 2/2 page
+    # facebook.set_confirmation_code()
+    # facebook.confirm_code()
+
+    # facebook.close_registed_popup()
+    # facebook.logout()
 
 # main処理
 def main():
