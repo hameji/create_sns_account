@@ -3,7 +3,7 @@
 
 from model.chrome import driver_manager
 
-TOP = "https://10minutemail.com/"
+TOP = "https://10minutemail.net/"
 
 class TenMinute(object):
 
@@ -20,8 +20,13 @@ class TenMinute(object):
         self.driver_manager.open_page(TOP)
 
     def scrape_email(self):
-        xpath = "//input[@id='mail_address']"
+        xpath = "//input[@class='mailtext']"
         return self.driver_manager.get_input_value(xpath, 0)
+
+    def reload_page(self):
+        print("reload")
+        url = "https://10minutemail.net/new.html"
+        self.driver_manager.open_page(url)
 
 # _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
@@ -33,6 +38,13 @@ class TenMinute(object):
         email = self.scrape_email()
         return email
             
+    def get_new_email(self):
+        print("new email")
+        self.reload_page()
+        email = self.scrape_email()
+        return email
+
+        
 # main処理
 def main():
     print("main")
