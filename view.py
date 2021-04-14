@@ -29,9 +29,8 @@ def create_account(name_str:str):
 
         # make UserInfo
         user_info = UserInfo(name, email)
-        print(user_info)
 
-        # facebook.create_account(user_info)
+        facebook.create_account(user_info, tm)
 
     
 

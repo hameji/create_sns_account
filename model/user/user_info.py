@@ -32,12 +32,6 @@ class UserInfo(UserName):
         # self.age = delta.years
         self.sex = random.randint(0, 1)
 
-    def refresh_email(self, user_info, e_mail: str):
-        self.lastname = user_info.lastname
-        self.firstname = user_info.first_name
+    def refresh_email(self, e_mail: str):
         self.email = e_mail
-        self.passwd = user_info.passwd
-        self.birthday = user_info.birthday
-        self.age = user_info.age
-        self.sex = user_info.sex
         return self
