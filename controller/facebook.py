@@ -191,6 +191,8 @@ def create_account(user_info: UserInfo, tm):
 
     facebook.check_registration()
 
+    ## incomplete
+    
     # # 2/2 page
     # facebook.set_confirmation_code()
     # facebook.confirm_code()
