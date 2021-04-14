@@ -10,7 +10,7 @@ from selenium.webdriver.support.select import Select
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.common.by import By
-# from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.keys import Keys
 # from selenium.common.exceptions import TimeoutException
 
 from model.error import chrome_error
@@ -85,6 +85,13 @@ class DriverManager(object):
             raise chrome_error.ChromeElementCountError
         return elements[index].get_attribute('value')
 
+    def clear_input(self, xpath: str, index: int):
+        input_elements = self.driver.find_elements_by_xpath(xpath)
+        print(f" ... found {len(input_elements)} inputs")
+        if index > len(input_elements) - 1:
+            raise chrome_error.ChromeElementCountError
+        input_elements[index].send_keys(Keys.CONTROL + 'a', Keys.BACKSPACE)
+
     def set_input(self, xpath: str, index: int, input: str):
         """Set html input text"""
         time.sleep(0.5)
@@ -116,7 +123,7 @@ class DriverManager(object):
         time.sleep(5)
 
     def get_current_url(self):
-        return self.driver.current_url()
+        return self.driver.current_url
 
     def close_driver(self):
         """Close chrome driver"""
