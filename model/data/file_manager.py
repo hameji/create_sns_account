@@ -9,7 +9,7 @@ import pathlib
 ACCOUNT_COLUMN_NAME = 'NAME'
 ACCOUNT_COLUMN_EMAIL = 'EMAIL'
 ACCOUNT_COLUMN_PASSWORD = 'PASSWORD'
-ACCOUNT_CSV_FILE_PATH = '../../user_accounts.csv'
+ACCOUNT_CSV_FILE_PATH = 'user_accounts.csv'
 
 class CsvModel(object):
     """Base csv model."""
