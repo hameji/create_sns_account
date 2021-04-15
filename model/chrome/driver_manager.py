@@ -23,7 +23,7 @@ class DriverManager(object):
         self.driver = None
         # self.WAIT = WebDriverWait(self.driver, 30)
 
-    def set_driver_options(self):
+    def set_driver_options(self, headless):
         """Set chrome driver option"""
         options = webdriver.ChromeOptions()
         options.add_argument(
@@ -38,14 +38,15 @@ class DriverManager(object):
         options.add_argument('--incognito') # シークレットモードの設定を付与
         # options.add_argument(f'--proxy-server={settings.TOR_PROXY}') # Torのプロキシを使用
         # options.add_argument('--proxy-server=http://153.122.60.209:8080') # Free Proxy
-        # options.add_argument('--headless') # ヘッドレスモード（画面非表示モード)の設定
+        if headless:
+            options.add_argument('--headless') # ヘッドレスモード（画面非表示モード)の設定
         options.add_experimental_option("detach", True)
         return options
 
-    def start_driver(self):
+    def start_driver(self, headless):
         """If driver is none set driver"""
         if self.driver is None:
-            driver_options = self.set_driver_options()
+            driver_options = self.set_driver_options(headless)
             if os.name == 'nt': #Windows
                 DRIVER_NAME = "chromedriver.exe"
             elif os.name == 'posix': #Mac
@@ -68,7 +69,12 @@ class DriverManager(object):
         """Get html element and return"""
         elements = self.driver.find_elements_by_xpath(xpath)
         return elements
-        
+
+    def get_elements_count(self, xpath: str):
+        """Get html element and return"""
+        elements = self.driver.find_elements_by_xpath(xpath)
+        return len(elements)
+
     def get_element_text(self, xpath: str, index: int):
         """Get html element's text"""
         elements = self.driver.find_elements_by_xpath(xpath)
@@ -104,6 +110,7 @@ class DriverManager(object):
     def select_option(self, xpath: str, option_index: int, select_index: int):
         """Set index of html option tag"""
         option_elements = self.driver.find_elements_by_xpath(xpath)
+        print(f" ... found {len(option_elements)} options")
         if option_index > len(option_elements) - 1:
             raise chrome_error.ChromeElementCountError
         select = Select(option_elements[option_index])
