@@ -5,6 +5,7 @@ import eel
 from view.eel import desktop
 
 from model.user.user_info import UserInfo
+from model.data.file_manager import AccountModel
 from model.data.data_manager import DataManager
 from controller import facebook
 from controller import twitter
@@ -35,6 +36,9 @@ def create_account(name_str:str):
 
         if result:
             print(user_info)
+            am = AccountModel()
+            user_data = user_info.convert_to_list()
+            am.save(user_info.convert_to_list())
 
 
 
