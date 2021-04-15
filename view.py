@@ -7,6 +7,7 @@ from view.eel import desktop
 from model.user.user_info import UserInfo
 from model.data.data_manager import DataManager
 from controller import facebook
+from controller import twitter
 from controller.ten_minute import TenMinute
 import settings
 
@@ -30,7 +31,12 @@ def create_account(name_str:str):
         # make UserInfo
         user_info = UserInfo(name, email)
 
-        facebook.create_account(user_info, tm)
+        result = twitter.create_account(user_info, tm)
+
+        if result:
+            print(user_info)
+
+
 
     
 
