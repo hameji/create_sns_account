@@ -164,12 +164,9 @@ def create_account(user_info: UserInfo, tm):
         twitter.press_not_now()
         # [settings] pic, introduction, topic, follow
     twitter.notice_not_now()
-    # notice 
+    # [settings] notice 
 
-    # facebook.close_registed_popup()
-    # facebook.logout()
-
-    print(twitter.user_info)
+    return True
 
 # main処理
 def main():
