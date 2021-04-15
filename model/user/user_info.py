@@ -7,7 +7,7 @@ from dataclasses import dataclass
 import random
 
 from model.extension.string_extension import StringExtension
-from model.utils.datetime_utils import DatetimeUtils
+# from model.utils.datetime_utils import DatetimeUtils
 from model.user.user_name import UserName
 
 @dataclass
@@ -35,3 +35,6 @@ class UserInfo(UserName):
     def refresh_email(self, e_mail: str):
         self.email = e_mail
         return self
+
+    def convert_to_list(self):
+        return [self.fullname, self.email, self.passwd]
