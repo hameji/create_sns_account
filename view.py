@@ -32,17 +32,15 @@ def create_account(name_str:str):
         # make UserInfo
         user_info = UserInfo(name, email)
 
+        # crete account with user_info
         result = twitter.create_account(user_info, tm)
 
+        # if True save
         if result:
             print(user_info)
             am = AccountModel()
             user_data = user_info.convert_to_list()
-            am.save(user_info.convert_to_list())
-
-
-
-    
+            am.save(user_data)
 
 if __name__ == "__main__":
     desktop.start(settings.APP_NAME, settings.END_POINT, settings.SIZE)
