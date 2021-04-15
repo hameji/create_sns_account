@@ -23,6 +23,7 @@ def create_account(name_str:str):
     name_list = DataManager().str_to_list(name_str)
 
     ## process each item in list
+    am = AccountModel()
     for name in name_list:
 
         # get temporary email
@@ -38,9 +39,12 @@ def create_account(name_str:str):
         # if True save
         if result:
             print(user_info)
-            am = AccountModel()
             user_data = user_info.convert_to_list()
             am.save(user_data)
+        else:
+            print(" ... failed!")
+    print("[create_account] finished!")
+    
 
 if __name__ == "__main__":
     desktop.start(settings.APP_NAME, settings.END_POINT, settings.SIZE)
